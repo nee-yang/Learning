@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.UserMapper">
+    <!--开启二级缓存-->
+    <!--    <cache type="com.example.demo.config.RedisConfig"/>-->
+    
+    <resultMap id="userOrderResultMap" type="userEntity">
+        <id property="uid" column="uid"/>
+        <result property="uname" column="uname"/>
+        <result property="birthday" column="birthday"/>
+        <result property="sex" column="sex"/>
+        <result property="address" column="address"/>
+
+        <!-- 配置一对多的关系
+        property：填写pojo类中集合类类属性的名称
+        javaType：填写集合类型的名称
+    -->
+        <collection property="orderList" javaType="list" ofType="orderEntity">
+            <id property="oid" column="oid"/>
+            <result property="number" column="number"/>
+            <result property="createTime" column="createTime"/>
+            <result property="note" column="note"/>
+        </collection>
+    </resultMap>
+    
+    
+    <select id="queryUserWithOrder" resultMap="userOrderResultMap">
+        select u.uid,u.uname,u.birthday,u.sex,u.address,o.oid,number,o.createTime,o.note
+        from sys.user as u
+        left join sys.order as o
+        on u.uid=o.uid
+    </select>
+</mapper>
+
+

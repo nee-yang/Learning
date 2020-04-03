@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.ScoreMapper">
+    <!--开启二级缓存-->
+    <!--    <cache type="com.example.demo.config.RedisConfig"/>-->
+
+    <select id="getSumScores" resultType="double" >
+
+          SELECT sum(score) from sys.score where cid=#{cid}
+
+    </select>
+
+    <resultMap id="MaxOrMinScoreResultMap"   type="java.util.Map">
+        <result column="cname" property="cname" jdbcType="VARCHAR" />
+        <result column="max(score)" property="max(score)" jdbcType="DOUBLE" />
+        <result column="min(score)" property="min(score)" jdbcType="DOUBLE" />
+    </resultMap>
+
+
+    <select id="getMaxAndMinScores" resultMap="MaxOrMinScoreResultMap">
+
+          select course.cname,max(score.score),min(score.score)
+          from sys.score as score
+          inner join sys.course as course
+          on score.cid=course.cid
+          group by course.cname;
+
+    </select>
+
+
+
+</mapper>
+
+
+
+

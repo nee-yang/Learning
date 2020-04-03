@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.repository.OrderMapper">
+    <!--开启二级缓存-->
+    <!--    <cache type="com.example.demo.config.RedisConfig"/>-->
+
+  <resultMap id="orderUserResultMapper" type="com.example.demo.model.Order">
+      <id property="oid" column="oid"/>
+      <result property="uid" column="uid"/>
+      <result property="number" column="number"/>
+      <result property="createTime" column="createTime"/>
+      <result property="note" column="note"/>
+
+      <!-- association ：配置一对一属性 -->
+      <!-- property:order里面的User属性名 -->
+      <!-- javaType:属性类型 -->
+      <association property="user" javaType="com.example.demo.model.User">
+          <id property="uid" column="uid"/>
+          <result property="una" column="una"/>
+          <result property="address" column="address"/>
+      </association>
+
+   </resultMap>
+    
+    <select id="queryOrderUserResultMap" resultMap="orderUserResultMapper">
+        select o.oid,o.uid,o.number,o.createtime,o.note,u.uname,u.address
+        from sys.order as o
+        left join sys.user as u
+        on o.uid=u.uid
+    </select>
+
+
+
+
+
+</mapper>
+
+
+
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.example.demo.repository.StudentMapper">
+    <!--开启二级缓存-->
+    <!--    <cache type="com.example.demo.config.RedisConfig"/>-->
+
+
+
+    <select id="getAll" resultType="studentEntity">
+
+          SELECT * FROM sys.student
+
+    </select>
+
+
+    <insert id="insertMultiple">
+        insert into sys.student values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.sid},#{item.sname},#{item.date_of_birth},#{item.gender})
+        </foreach>
+    </insert>
+
+    <insert id="insert">
+        insert into sys.student values (#{sid},#{sname},#{date_of_birth},#{gender})
+    </insert>
+
+
+</mapper>
+
+
+
+
